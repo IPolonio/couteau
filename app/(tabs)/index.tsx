@@ -1,8 +1,7 @@
-import { Image, StyleSheet, Dimensions } from 'react-native';
 import React from 'react';
+import { StyleSheet, View, Text, Image, Platform } from 'react-native';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
+import { Card } from '@/components/Card';
 
 export default function HomeScreen() {
   return (
@@ -11,35 +10,45 @@ export default function HomeScreen() {
       headerImage={
         <Image
           source={require('@/assets/images/toolbox.jpg')}
-          style={styles.toolboxLogo}
+          style={styles.headerImage}
         />
       }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">¡Bienvenido!</ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Inicio</ThemedText>
-        <ThemedText>Seleccione una función en las pestañas de abajo.</ThemedText>
-      </ThemedView>
+      <View style={styles.container}>
+        <Card>
+          <Text style={styles.cardTitle}>Información General</Text>
+          <Text style={styles.cardText}>
+            Este proyecto está enfocado en el desarrollo de una aplicación moderna utilizando
+            tecnologías actuales como React Native, Expo, y varias APIs para funcionalidades
+            dinámicas.
+          </Text>
+        </Card>
+      </View>
     </ParallaxScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
+  container: {
+    padding: 20,
   },
-  stepContainer: {
-    gap: 8,
+  cardTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 10,
+    color: '#1D3D47',
+  },
+  cardText: {
+    fontSize: 16,
+    color: '#4E342E',
     marginBottom: 8,
+    textAlign: 'center',
   },
-  toolboxLogo: {
-    height: Dimensions.get('window').width * 0.7,
-    width: Dimensions.get('window').width,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
+  bold: {
+    fontWeight: 'bold',
+  },
+  headerImage: {
+    height: '100%',
+    width: '100%',
+    resizeMode: 'cover',
   },
 });

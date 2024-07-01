@@ -1,6 +1,6 @@
 import { Tabs } from 'expo-router';
 import React from 'react';
-import { Ionicons } from '@expo/vector-icons';
+import { TabBarIcon } from '@/components/navigation/TabBarIcon';
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
 
@@ -12,20 +12,13 @@ export default function TabLayout() {
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
         headerShown: false,
-        tabBarStyle: {
-          backgroundColor: Colors[colorScheme ?? 'light'].background,
-          borderTopWidth: 0,
-        },
-        tabBarLabelStyle: {
-          fontSize: 12,
-        },
       }}>
       <Tabs.Screen
         name="index"
         options={{
           title: 'Inicio',
           tabBarIcon: ({ color, focused }) => (
-            <Ionicons name={focused ? 'home' : 'home-outline'} size={24} color={color} />
+            <TabBarIcon name={focused ? 'home' : 'home-outline'} color={color} />
           ),
         }}
       />
@@ -34,7 +27,7 @@ export default function TabLayout() {
         options={{
           title: 'Género',
           tabBarIcon: ({ color, focused }) => (
-            <Ionicons name={focused ? 'person' : 'person-outline'} size={24} color={color} />
+            <TabBarIcon name={focused ? 'man' : 'man-outline'} color={color} />
           ),
         }}
       />
@@ -43,16 +36,16 @@ export default function TabLayout() {
         options={{
           title: 'Edad',
           tabBarIcon: ({ color, focused }) => (
-            <Ionicons name={focused ? 'calendar' : 'calendar-outline'} size={24} color={color} />
+            <TabBarIcon name={focused ? 'calendar' : 'calendar-outline'} color={color} />
           ),
         }}
       />
       <Tabs.Screen
         name="university"
         options={{
-          title: 'Universidad',
+          title: 'Universidades',
           tabBarIcon: ({ color, focused }) => (
-            <Ionicons name={focused ? 'school' : 'school-outline'} size={24} color={color} />
+            <TabBarIcon name={focused ? 'school' : 'school-outline'} color={color} />
           ),
         }}
       />
@@ -61,7 +54,7 @@ export default function TabLayout() {
         options={{
           title: 'Clima',
           tabBarIcon: ({ color, focused }) => (
-            <Ionicons name={focused ? 'cloud' : 'cloud-outline'} size={24} color={color} />
+            <TabBarIcon name={focused ? 'cloud' : 'cloud-outline'} color={color} />
           ),
         }}
       />
@@ -70,7 +63,7 @@ export default function TabLayout() {
         options={{
           title: 'Noticias',
           tabBarIcon: ({ color, focused }) => (
-            <Ionicons name={focused ? 'newspaper' : 'newspaper-outline'} size={24} color={color} />
+            <TabBarIcon name={focused ? 'newspaper' : 'newspaper-outline'} color={color} />
           ),
         }}
       />
@@ -79,7 +72,7 @@ export default function TabLayout() {
         options={{
           title: 'Acerca de',
           tabBarIcon: ({ color, focused }) => (
-            <Ionicons name={focused ? 'information-circle' : 'information-circle-outline'} size={24} color={color} />
+            <TabBarIcon name={focused ? 'information-circle' : 'information-circle-outline'} color={color} />
           ),
         }}
       />

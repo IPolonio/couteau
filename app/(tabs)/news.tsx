@@ -1,90 +1,94 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, ScrollView, Linking, Image, Dimensions } from 'react-native';
-import axios from 'axios';
+import { StyleSheet, View, Text, FlatList, Image } from 'react-native';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 
-const HEADER_HEIGHT = Dimensions.get('window').width * 0.7;
+const API_KEY = 'zkwIrbq2ga8a9Qab0fzT1xHBNpSkgnOox9vmCSipX9WRWF3M';
 
-const NewsScreen = () => {
-  const [news, setNews] = useState<any[]>([]);
+export default function NewsScreen() {
+  const [news, setNews] = useState<any>([]);
 
   useEffect(() => {
     const fetchNews = async () => {
       try {
-        const response = await axios.get(
-          'https://newsapi.org/v2/top-headlines?country=us&apiKey=2fe65d1e59184d71a6bfc0b902b99abd'
+        const response = await fetch(
+          `https://api.currentsapi.services/v1/latest-news?apiKey=${API_KEY}`
         );
-        setNews(response.data.articles.slice(0, 3));
+        const data = await response.json();
+        
+        setNews(data.news.slice(0, 3));
       } catch (error) {
-        console.error('Error fetching news:', error);
+        console.error(error);
       }
     };
+
     fetchNews();
   }, []);
 
   return (
     <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
+      headerBackgroundColor={{ light: '#FFE0B2', dark: '#FF8F00' }}
       headerImage={
         <Image
           source={require('@/assets/images/news.jpg')}
           style={styles.headerImage}
         />
-      }
-    >
+      }>
       <View style={styles.container}>
-        {news.map((article, index) => (
-          <View key={index} style={styles.card}>
-            <Text style={styles.title}>{article.title}</Text>
-            <Text style={styles.description}>{article.description}</Text>
-            <Text
-              style={styles.readMore}
-              onPress={() => Linking.openURL(article.url)}
-            >
-              Read More
-            </Text>
-          </View>
-        ))}
+        <Text style={styles.screenTitle}>Últimas Noticias</Text>
+        <FlatList
+          scrollEnabled={false}
+          data={news}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => (
+            <View style={styles.newsItem}>
+              <Text style={styles.newsTitle}>{item.title}</Text>
+              <Text style={styles.newsDescription}>{item.description}</Text>
+            </View>
+          )}
+        />
       </View>
     </ParallaxScrollView>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     padding: 20,
-    backgroundColor: '#ffffff',
   },
-  card: {
-    backgroundColor: '#f9f9f9',
-    borderRadius: 10,
-    padding: 15,
-    marginBottom: 15,
+  screenTitle: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#FF8F00',
+    marginBottom: 20,
+    textAlign: 'center',
+  },
+  newsItem: {
+    marginBottom: 20,
+    padding: 20,
+    backgroundColor: '#FFF3E0',
+    borderRadius: 8,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 2,
-    elevation: 3,
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
-  title: {
+  newsTitle: {
     fontSize: 18,
     fontWeight: 'bold',
-    marginBottom: 10,
+    marginBottom: 8,
+    color: '#FF8F00',
   },
-  description: {
-    fontSize: 14,
-    marginBottom: 10,
-  },
-  readMore: {
-    color: 'blue',
-    textDecorationLine: 'underline',
-    fontSize: 14,
+  newsDescription: {
+    fontSize: 16,
+    color: '#4E342E',
   },
   headerImage: {
-    height: HEADER_HEIGHT,
-    width: Dimensions.get('window').width,
+    height: '100%',
+    width: '100%',
+    resizeMode: 'cover',
   },
 });
-
-export default NewsScreen;

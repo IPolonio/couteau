@@ -1,78 +1,73 @@
 import React, { useState } from 'react';
-import { Image, StyleSheet, TextInput, Button, Dimensions } from 'react-native';
+import { StyleSheet, View, TextInput, Button, Text, Image } from 'react-native';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
 
-export default function GenderScreen() {
+export default function GenderPredictionScreen() {
   const [name, setName] = useState('');
   const [gender, setGender] = useState('');
+  const [color, setColor] = useState('');
 
-  const fetchGender = async () => {
-    const response = await fetch(`https://api.genderize.io/?name=${name}`);
-    const data = await response.json();
-    setGender(data.gender);
+  const predictGender = async () => {
+    try {
+      const response = await fetch(`https://api.genderize.io/?name=${name}`);
+      const data = await response.json();
+      setGender(data.gender);
+      setColor(data.gender === 'male' ? 'blue' : 'pink');
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
     <ParallaxScrollView
-      headerBackgroundColor={{ light: '#FFB6C1', dark: '#8B0000' }}
+      headerBackgroundColor={{ light: '#F8BBD0', dark: '#AD1457' }}
       headerImage={
         <Image
-          source={require('@/assets/images/gender.png')}
+          source={require('@/assets/images/gender.jpg')}
           style={styles.headerImage}
         />
       }>
-      <ThemedView style={styles.container}>
-        <ThemedText type="title">Predicción de Género</ThemedText>
+      <View style={styles.container}>
         <TextInput
           style={styles.input}
-          placeholder="Ingrese su nombre"
+          placeholder="Ingresa un nombre"
           value={name}
           onChangeText={setName}
         />
-        <Button title="Predecir" onPress={fetchGender} />
+        <Button title="Predecir Género" onPress={predictGender} color="#AD1457" />
         {gender && (
-          <ThemedView style={[styles.result, gender === 'male' ? styles.male : styles.female]}>
-            <ThemedText type="defaultSemiBold">
-              Género: {gender === 'male' ? 'Masculino' : 'Femenino'}
-            </ThemedText>
-          </ThemedView>
+          <View style={[styles.resultContainer, { backgroundColor: color }]}>
+            <Text style={styles.resultText}>Género: {gender}</Text>
+          </View>
         )}
-      </ThemedView>
+      </View>
     </ParallaxScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
     padding: 20,
   },
   input: {
-    height: 40,
-    borderColor: '#ced4da',
     borderWidth: 1,
-    marginBottom: 16,
-    padding: 8,
-    width: '80%',
+    borderColor: '#AD1457',
     borderRadius: 8,
+    padding: 10,
+    marginBottom: 20,
   },
-  result: {
+  resultContainer: {
     marginTop: 20,
     padding: 20,
     borderRadius: 8,
   },
-  male: {
-    backgroundColor: '#add8e6',
-  },
-  female: {
-    backgroundColor: '#f6c6ea',
+  resultText: {
+    color: '#FFF',
+    fontSize: 18,
   },
   headerImage: {
-    height: Dimensions.get('window').width * 0.7,
-    width: Dimensions.get('window').width,
+    height: '100%',
+    width: '100%',
+    resizeMode: 'cover',
   },
 });

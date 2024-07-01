@@ -1,84 +1,91 @@
 import React, { useState } from 'react';
-import { Image, StyleSheet, TextInput, Button, FlatList, Dimensions } from 'react-native';
+import { StyleSheet, View, TextInput, Button, Text, FlatList, Image, Linking } from 'react-native';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
 
-export default function UniversityScreen() {
+export default function UniversitySearchScreen() {
   const [country, setCountry] = useState('');
   const [universities, setUniversities] = useState<any>([]);
 
-  const fetchUniversities = async () => {
-    const response = await fetch(`http://universities.hipolabs.com/search?country=${country}`);
-    const data = await response.json();
-    setUniversities(data);
+  const searchUniversities = async () => {
+    try {
+      const response = await fetch(`http://universities.hipolabs.com/search?country=${country}`);
+      const data = await response.json();
+      setUniversities(data);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
     <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
+      headerBackgroundColor={{ light: '#C8E6C9', dark: '#388E3C' }}
       headerImage={
         <Image
           source={require('@/assets/images/university.png')}
           style={styles.headerImage}
         />
       }>
-      <ThemedView style={styles.container}>
-        <ThemedText type="title">Buscar Universidades</ThemedText>
+      <View style={styles.container}>
         <TextInput
           style={styles.input}
-          placeholder="Ingrese el nombre del país"
+          placeholder="Ingresa el nombre de un país en ingles"
           value={country}
           onChangeText={setCountry}
         />
-        <Button title="Buscar" onPress={fetchUniversities} />
-        <FlatList scrollEnabled={false}
+        <Button title="Buscar Universidades" onPress={searchUniversities} color="#388E3C" />
+        <FlatList
           data={universities}
+          scrollEnabled={false}
           keyExtractor={(item) => item.name}
           renderItem={({ item }) => (
-            <ThemedView style={styles.university}>
-              <ThemedText style={styles.universityName}>{item.name}</ThemedText>
-              <ThemedText style={styles.universityCountry}>{item.country}</ThemedText>
-            </ThemedView>
+            <View style={styles.universityContainer}>
+              <Text style={styles.universityName}>{item.name}</Text>
+              <Text style={styles.universityDomain}>{item.domains[0]}</Text>
+              <Text
+                style={styles.universityWebsite}
+                onPress={() => Linking.openURL(item.web_pages[0])}
+              >
+                {item.web_pages[0]}
+              </Text>
+            </View>
           )}
         />
-      </ThemedView>
+      </View>
     </ParallaxScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
     padding: 20,
   },
   input: {
-    height: 40,
-    borderColor: '#ced4da',
     borderWidth: 1,
-    marginBottom: 16,
-    padding: 8,
-    width: '80%',
+    borderColor: '#388E3C',
     borderRadius: 8,
+    padding: 10,
+    marginBottom: 20,
   },
-  university: {
-    marginTop: 20,
+  universityContainer: {
+    marginBottom: 20,
     padding: 20,
     borderRadius: 8,
-    backgroundColor: '#e9ecef',
-    width: '100%',
+    backgroundColor: '#C8E6C9',
   },
   universityName: {
     fontSize: 18,
     fontWeight: 'bold',
   },
-  universityCountry: {
+  universityDomain: {
+    fontSize: 16,
+  },
+  universityWebsite: {
     fontSize: 14,
+    color: '#1E88E5',
   },
   headerImage: {
-    height: Dimensions.get('window').width * 0.7,
-    width: Dimensions.get('window').width,
+    height: '100%',
+    width: '100%',
+    resizeMode: 'cover',
   },
 });

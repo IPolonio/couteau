@@ -1,74 +1,75 @@
 import React, { useState } from 'react';
-import { Image, StyleSheet, TextInput, Button, Dimensions } from 'react-native';
+import { StyleSheet, View, TextInput, Button, Text, Image } from 'react-native';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
 
-export default function AgeScreen() {
+export default function AgePredictionScreen() {
   const [name, setName] = useState('');
-  const [age, setAge] = useState<any>('');
+  const [age, setAge] = useState<number | null>(null);
+  const [category, setCategory] = useState('');
 
-  const fetchAge = async () => {
-    const response = await fetch(`https://api.agify.io/?name=${name}`);
-    const data = await response.json();
-    setAge(data.age);
+  const predictAge = async () => {
+    try {
+      const response = await fetch(`https://api.agify.io/?name=${name}`);
+      const data = await response.json();
+      setAge(data.age);
+      setCategory(data.age < 18 ? 'Joven' : data.age < 60 ? 'Adulto' : 'Anciano');
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
     <ParallaxScrollView
-      headerBackgroundColor={{ light: '#FFE4B5', dark: '#8B4513' }}
+      headerBackgroundColor={{ light: '#FFF9C4', dark: '#FBC02D' }}
       headerImage={
         <Image
           source={require('@/assets/images/age.png')}
           style={styles.headerImage}
         />
       }>
-      <ThemedView style={styles.container}>
-        <ThemedText type="title">Predicción de Edad</ThemedText>
+      <View style={styles.container}>
         <TextInput
           style={styles.input}
-          placeholder="Ingrese su nombre"
+          placeholder="Ingresa un nombre"
           value={name}
           onChangeText={setName}
         />
-        <Button title="Predecir" onPress={fetchAge} />
-        {age && (
-          <ThemedView style={styles.result}>
-            <ThemedText type="defaultSemiBold">Edad: {age}</ThemedText>
-            <ThemedText>
-              {age < 18 ? 'Joven' : age < 60 ? 'Adulto' : 'Anciano'}
-            </ThemedText>
-          </ThemedView>
+        <Button title="Predecir Edad" onPress={predictAge} color="#FBC02D" />
+        {age !== null && (
+          <View style={styles.resultContainer}>
+            <Text style={styles.resultText}>Edad: {age}</Text>
+            <Text style={styles.resultText}>Categoría: {category}</Text>
+          </View>
         )}
-      </ThemedView>
+      </View>
     </ParallaxScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
     padding: 20,
   },
   input: {
-    height: 40,
-    borderColor: '#ced4da',
     borderWidth: 1,
-    marginBottom: 16,
-    padding: 8,
-    width: '80%',
+    borderColor: '#FBC02D',
     borderRadius: 8,
+    padding: 10,
+    marginBottom: 20,
   },
-  result: {
+  resultContainer: {
     marginTop: 20,
     padding: 20,
     borderRadius: 8,
-    backgroundColor: '#e9ecef',
+    backgroundColor: '#FBC02D',
+  },
+  resultText: {
+    color: '#FFF',
+    fontSize: 18,
   },
   headerImage: {
-    height: Dimensions.get('window').width * 0.7,
-    width: Dimensions.get('window').width,
+    height: '100%',
+    width: '100%',
+    resizeMode: 'cover',
   },
 });

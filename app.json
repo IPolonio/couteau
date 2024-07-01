@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "my-app",
-    "slug": "my-app",
+    "name": "couteau",
+    "slug": "couteau",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/ppf.png",
-    "scheme": "myapp",
+    "icon": "./assets/images/profile.png",
+    "scheme": "couteau",
     "userInterfaceStyle": "automatic",
     "splash": {
       "image": "./assets/images/splash.png",
@@ -17,15 +17,15 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/ppf.png",
+        "foregroundImage": "./assets/images/profile.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.brahiam.couteau"
+      "package": "com.ipolonio.couteau"
     },
     "web": {
       "bundler": "metro",
       "output": "static",
-      "favicon": "./assets/images/ppf.png"
+      "favicon": "./assets/images/profile.png"
     },
     "plugins": [
       "expo-router"
@@ -38,7 +38,7 @@
         "origin": false
       },
       "eas": {
-        "projectId": "27a40905-732b-450d-86d3-911780750f5a"
+        "projectId": "94a396c3-0d3b-4cdb-adcf-9ca9479d3560"
       }
     }
   }

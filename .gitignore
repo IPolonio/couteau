@@ -9,8 +9,8 @@ npm-debug.*
 *.mobileprovision
 *.orig.*
 web-build/
-**.jpg
-**.png
+# **.jpg
+# **.png
 
 # macOS
 .DS_Store
@@ -20,4 +20,4 @@ web-build/
 
 expo-env.d.ts
 # @end expo-cli
-_newsapi
+_weatherapi

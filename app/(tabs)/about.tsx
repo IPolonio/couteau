@@ -1,46 +1,82 @@
 import React from 'react';
-import { Dimensions, Image, StyleSheet } from 'react-native';
+import { StyleSheet, View, Text, Image, Linking, TouchableOpacity } from 'react-native';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
 
 export default function AboutScreen() {
   return (
     <ParallaxScrollView
-      headerBackgroundColor={{ light: '#FFD700', dark: '#8B8000' }}
+      headerBackgroundColor={{ light: '#FFCCBC', dark: '#D84315' }}
       headerImage={
         <Image
-          source={require('@/assets/images/about.png')}
+          source={require('@/assets/images/about.jpg')}
           style={styles.headerImage}
         />
       }>
-      <ThemedView style={styles.container}>
-        <Image source={require('@/assets/images/ppf.png')} style={styles.image} />
-        <ThemedText type="title">Acerca de mí</ThemedText>
-        <ThemedText>Nombre: Brahiam Montero</ThemedText>
-        <ThemedText>Email: 20222034@itla.edu.do</ThemedText>
-        <ThemedText>Teléfono: +8099622004</ThemedText>
-        <ThemedText>Descripción: Software Developer</ThemedText>
-      </ThemedView>
+      <View style={styles.container}>
+        <View style={styles.card}>
+          <Image
+            source={require('@/assets/images/profile.png')}
+            style={styles.profileImage}
+          />
+          <Text style={styles.title}>Isaac Alexander Polonio Lorenzo</Text>
+          <TouchableOpacity onPress={() => Linking.openURL('mailto:20221934@itla.edu.do')}>
+            <Text style={styles.email}>20221934@itla.edu.do</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
     </ParallaxScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
     padding: 20,
+    alignItems: 'center',
   },
-  image: {
+  card: {
+    width: '100%',
+    padding: 20,
+    backgroundColor: '#FFF',
+    borderRadius: 8,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  profileImage: {
     width: 100,
     height: 100,
     borderRadius: 50,
     marginBottom: 20,
   },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 10,
+    color: '#D84315',
+    textAlign: 'center',
+  },
+  email: {
+    fontSize: 18,
+    color: '#1E88E5',
+    textDecorationLine: 'underline',
+    marginBottom: 10,
+    textAlign: 'center',
+  },
+  text: {
+    fontSize: 18,
+    color: '#4E342E',
+    marginBottom: 8,
+    textAlign: 'center',
+  },
   headerImage: {
-    height: Dimensions.get('window').width * 0.7,
-    width: Dimensions.get('window').width,
+    height: '100%',
+    width: '100%',
+    resizeMode: 'cover',
   },
 });
